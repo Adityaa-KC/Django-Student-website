@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - University Admission System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h4>
+            </div>
+            <div class="card-body">
+                <h5>Welcome, {{ user.username }}!</h5>
+                <p>Manage your university admission applications here.</p>
+                
+                <div class="mt-3">
+                    <a href="{% url 'new_application' %}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-1"></i>New Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>My Applications</h5>
+            </div>
+            <div class="card-body">
+                {% if applications %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Course</th>
+                                    <th>Date Applied</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for app in applications %}
+                                <tr>
+                                    <td>{{ app.application_id|default:app.id }}</td>
+                                    <td>{{ app.course.name }}</td>
+                                    <td>{{ app.date_created|date:"M d, Y" }}</td>
+                                    <td>
+                                        {% if app.status == 'pending' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elif app.status == 'approved' %}
+                                            <span class="badge bg-success">Approved</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if app.is_complete %}
+                                            <a href="{% url 'print_application' app.pk %}" 
+                                               class="btn btn-sm btn-outline-info">
+                                                <i class="fas fa-print"></i> Print
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'edit_application' app.pk %}" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            
+                                            {% if app.documents.count > 0 %}
+                                                <a href="{% url 'upload_documents' app.pk %}" 
+                                                   class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-upload"></i> Documents ({{ app.documents.count }}/3)
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'upload_documents' app.pk %}" 
+                                                   class="btn btn-sm btn-outline-warning">
+                                                    <i class="fas fa-upload"></i> Upload Documents
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>You haven't created any applications yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

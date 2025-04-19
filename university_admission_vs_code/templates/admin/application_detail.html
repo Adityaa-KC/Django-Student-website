@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}Application Details - University Admission System{% endblock %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Application Details</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">Application #{{ application.application_id }}</h4>
+                    <div class="btn-group">
+                        <a href="{{ url_for('application_print', application_id=application.application_id) }}" class="btn btn-success" target="_blank">
+                            <i class="fas fa-print me-2"></i>Print
+                        </a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#statusChangeModal">
+                            <i class="fas fa-edit me-2"></i>Change Status
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black">
+                        <h5 class="mb-0">Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="me-2">Current Status:</span>
+                            {% if application.status == 'Pending' %}
+                                <span class="badge bg-warning">{{ application.status }}</span>
+                            {% elif application.status == 'Approved' %}
+                                <span class="badge bg-success">{{ application.status }}</span>
+                            {% else %}
+                                <span class="badge bg-danger">{{ application.status }}</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <span class="me-2">Date Applied:</span>
+                            <span>{{ application.date_created.strftime('%d %b %Y, %H:%M') }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black">
+                        <h5 class="mb-0">Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="30%"><strong>Full Name</strong></td>
+                                <td>{{ application.first_name }} {{ application.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date of Birth</strong></td>
+                                <td>{{ application.date_of_birth.strftime('%d %b %Y') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender</strong></td>
+                                <td>
+                                    {% if application.gender == 'M' %}Male
+                                    {% elif application.gender == 'F' %}Female
+                                    {% else %}Other{% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile Number</strong></td>
+                                <td>{{ application.mobile_number }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td>{{ application.email }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aadhar Number</strong></td>
+                                <td>{{ application.aadhar_number }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black">
+                        <h5 class="mb-0">Course Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="30%"><strong>Selected Course</strong></td>
+                                <td>{{ application.course.name if application.course else 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Course Code</strong></td>
+                                <td>{{ application.course.code if application.course else 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duration</strong></td>
+                                <td>{{ application.course.duration if application.course else 'N/A' }} years</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-black text-center">
+                        <h5 class="mb-0">Applicant Photo</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if application.photo_filename %}
+                        <img src="{{ application.get_photo_url() }}" alt="Applicant Photo" class="img-fluid mb-3" style="max-height: 300px;">
+                        {% else %}
+                        <div class="alert alert-warning">No photo uploaded</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black text-center">
+                        <h5 class="mb-0">Signature</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if application.signature_filename %}
+                        <img src="{{ application.get_signature_url() }}" alt="Applicant Signature" class="img-fluid mb-3" style="max-height: 100px;">
+                        {% else %}
+                        <div class="alert alert-warning">No signature uploaded</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-black text-center">
+                        <h5 class="mb-0">Aadhar Card</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if application.aadhar_card_filename %}
+                        <img src="{{ application.get_aadhar_card_url() }}" alt="Aadhar Card" class="img-fluid mb-3">
+                        {% else %}
+                        <div class="alert alert-warning">No Aadhar card uploaded</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-center">
+        <a href="{{ url_for('admin_applications') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Applications
+        </a>
+    </div>
+</div>
+
+<!-- Status Change Modal -->
+<div class="modal fade" id="statusChangeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Application Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('update_application_status', application_id=application.application_id) }}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="status">New Status:</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="Pending" {% if application.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Approved" {% if application.status == 'Approved' %}selected{% endif %}>Approved</option>
+                            <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

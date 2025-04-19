@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form - {{ application.application_id }}</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}">
+</head>
+<body>
+    <div class="d-print-none container mb-4">
+        <div class="row">
+            <div class="col-12 text-center py-4">
+                <h2>Application Print Preview</h2>
+                <p>Click the button below to print your application or use Ctrl+P (Cmd+P on Mac).</p>
+                <button class="btn btn-lg btn-primary" onclick="window.print();">
+                    <i class="fas fa-print me-2"></i>Print Application
+                </button>
+                <a href="{{ url_for('application_preview', application_id=application.application_id) }}" class="btn btn-lg btn-secondary ms-2">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Preview
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="print-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="university-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+            </div>
+            <div class="university-info">
+                <h1 class="university-name">University Admission System</h1>
+                <p class="university-address">University Campus, Main Street, City - 123456</p>
+            </div>
+        </div>
+
+        <!-- Application Title -->
+        <div class="application-title">
+            <h2>APPLICATION FORM</h2>
+            <div class="application-meta">
+                <table class="meta-table" border="1">
+                    <tr>
+                        <td><strong>Application ID:</strong></td>
+                        <td>{{ application.application_id }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date:</strong></td>
+                        <td>{{ application.date_created.strftime('%d-%m-%Y') }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="info-container">
+                <table class="info-table" width="100%">
+                    <tr>
+                        <td width="75%">
+                            <h3>Personal Information</h3>
+                            <table width="100%" border="1" cellpadding="4" cellspacing="0">
+                                <tr>
+                                    <td width="30%"><strong>Full Name</strong></td>
+                                    <td>{{ application.first_name }} {{ application.last_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date of Birth</strong></td>
+                                    <td>{{ application.date_of_birth.strftime('%d-%m-%Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gender</strong></td>
+                                    <td>
+                                        {% if application.gender == 'M' %}Male
+                                        {% elif application.gender == 'F' %}Female
+                                        {% else %}Other{% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mobile Number</strong></td>
+                                    <td>{{ application.mobile_number }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Email</strong></td>
+                                    <td>{{ application.email }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Aadhar Number</strong></td>
+                                    <td>{{ application.aadhar_number }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="25%" class="image-cell">
+                            <!-- Photo with label underneath -->
+                            <div class="photo-container">
+                                {% if application.photo_filename %}
+                                <img src="{{ application.get_photo_url() }}" alt="Applicant Photo">
+                                {% endif %}
+                            </div>
+                            <p style="text-align: center; font-size: 12px; margin-top: 5px;">Applicant Photo</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="info-container">
+                <h3>Course Information</h3>
+                <table width="100%" border="1" cellpadding="4" cellspacing="0">
+                    <tr>
+                        <td width="30%"><strong>Selected Course</strong></td>
+                        <td>{{ application.course.name if application.course else 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Course Code</strong></td>
+                        <td>{{ application.course.code if application.course else 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duration</strong></td>
+                        <td>{{ application.course.duration if application.course else 'N/A' }} years</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="info-container">
+                <table class="info-table" width="100%">
+                    <tr>
+                        <td width="75%">
+                            <h3>Document Information</h3>
+                            <table width="100%" border="1" cellpadding="4" cellspacing="0">
+                                <tr>
+                                    <td width="30%"><strong>Aadhar Card</strong></td>
+                                    <td>{{ 'Uploaded' if application.aadhar_card_filename else 'Not Uploaded' }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Photo</strong></td>
+                                    <td>{{ 'Uploaded' if application.photo_filename else 'Not Uploaded' }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Signature</strong></td>
+                                    <td>{{ 'Uploaded' if application.signature_filename else 'Not Uploaded' }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="25%" class="image-cell">
+                            <!-- Signature with label underneath -->
+                            <div style="margin-top: 20px;">
+                                {% if application.signature_filename %}
+                                <img src="{{ application.get_signature_url() }}" alt="Applicant Signature" style="max-width: 150px; max-height: 60px; border-bottom: 1px solid #000;">
+                                {% else %}
+                                <div style="width: 150px; height: 60px; border-bottom: 1px solid #000;"></div>
+                                {% endif %}
+                                <p style="text-align: center; font-size: 12px; margin-top: 5px;">Applicant Signature</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Aadhar Card Display -->
+            <div class="info-container">
+                <h3>Aadhar Card</h3>
+                <div style="text-align: center;">
+                    {% if application.aadhar_card_filename %}
+                    <img src="{{ application.get_aadhar_card_url() }}" alt="Aadhar Card" style="max-width: 100%; max-height: 200px;">
+                    {% else %}
+                    <div style="width: 100%; height: 100px; border: 1px dashed #999; display: flex; align-items: center; justify-content: center;">
+                        <p>Aadhar Card Not Uploaded</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Address Section -->
+            <div class="address-section">
+                <h3>Mailing Address</h3>
+                <div class="address-box">
+                    <p class="instruction">Write your complete mailing address below:</p>
+                </div>
+            </div>
+
+            <!-- Declaration -->
+            <div class="info-container">
+                <h3>Declaration</h3>
+                <p style="text-align: justify; font-size: 12px;">
+                    I hereby declare that all the information provided by me in this application is true and correct to the best of my knowledge and belief. I understand that in case any information is found to be false or incorrect, my application is liable to be rejected and I may be disqualified for admission to the course.
+                </p>
+            </div>
+
+            <!-- Date and Time -->
+            <div class="datetime-section">
+                <p>Date and Time of Application: {{ application.date_created.strftime('%d-%m-%Y %H:%M:%S') }}</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>This is a computer-generated document. No signature is required.</p>
+            <p>University Admission System © {{ application.date_created.strftime('%Y') }}</p>
+        </div>
+    </div>
+</body>
+</html>

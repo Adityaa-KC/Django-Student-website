@@ -1,0 +1,196 @@
+/* Custom styles for University Admission System */
+
+/* Hero section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/img/university-campus.svg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 120px 0;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Course cards */
+.course-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+.course-card .card-header {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, #004a99 100%);
+    color: white;
+    padding: 1.25rem 1.5rem;
+}
+
+.course-card .card-body {
+    padding: 1.5rem;
+    background-color: #2a2d31;
+    color: #e1e1e1;
+}
+
+.course-card .card-text {
+    color: #e1e1e1;
+    line-height: 1.6;
+}
+
+.course-card .badge {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+}
+
+.course-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #0d6efd; /* Bright blue */
+}
+
+/* Features/steps section */
+.feature-card {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+    background-color: #2a2d31;
+    color: #a0cef9;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+}
+
+.feature-card .card-body {
+    background-color: #2a2d31;
+}
+
+.border-left-primary {
+    border-left: 0.25rem solid var(--bs-primary) !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid var(--bs-success) !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid var(--bs-warning) !important;
+}
+
+/* Statistics section */
+.stats-section {
+    background-color: #212529;
+    padding: 3rem 0;
+    margin: 3rem 0;
+    border-top: 1px solid #2c3237;
+    border-bottom: 1px solid #2c3237;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--bs-primary);
+    margin-bottom: 0.5rem;
+}
+
+.stat-title {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: #e1e1e1;
+}
+
+/* Testimonials */
+.testimonial-card {
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem auto;
+}
+
+.testimonial-text {
+    font-style: italic;
+    position: relative;
+    padding: 0 1.5rem;
+}
+
+.testimonial-text:before,
+.testimonial-text:after {
+    content: '"';
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+}
+
+.testimonial-text:before {
+    left: 0;
+    top: -10px;
+}
+
+.testimonial-text:after {
+    right: 0;
+    bottom: -10px;
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 3rem 0;
+    background-color: var(--bs-primary);
+    color: white;
+    margin: 3rem 0 0 0;
+}
+
+.cta-btn {
+    background-color: white;
+    color: var(--bs-primary);
+    font-weight: bold;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    border: 2px solid white;
+    transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+    background-color: transparent;
+    color: white;
+}

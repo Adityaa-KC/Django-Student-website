@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Applications - University Admission System{% endblock %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h3 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Applications Management</h3>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-light">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+    <div class="card-body">
+        <!-- Filter Form -->
+        <div class="card mb-4">
+            <div class="card-header bg-black">
+                <h5 class="mb-0">Filter Applications</h5>
+            </div>
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="">All Statuses</option>
+                            <option value="Pending" {% if current_status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Approved" {% if current_status == 'Approved' %}selected{% endif %}>Approved</option>
+                            <option value="Rejected" {% if current_status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="course_id" class="form-label">Course</label>
+                        <select class="form-select" id="course_id" name="course_id">
+                            <option value="">All Courses</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}" {% if current_course_id|string == course.id|string %}selected{% endif %}>
+                                {{ course.name }} ({{ course.code }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="fas fa-filter me-2"></i>Apply Filters
+                        </button>
+                        <a href="{{ url_for('admin_applications') }}" class="btn btn-secondary">
+                            <i class="fas fa-redo me-2"></i>Reset
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Applications Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Application ID</th>
+                        <th>Applicant Name</th>
+                        <th>Course</th>
+                        <th>Mobile</th>
+                        <th>Date Applied</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                    <tr>
+                        <td>{{ application.application_id }}</td>
+                        <td>{{ application.first_name }} {{ application.last_name }}</td>
+                        <td>{{ application.course.name if application.course else 'N/A' }}</td>
+                        <td>{{ application.mobile_number }}</td>
+                        <td>{{ application.date_created.strftime('%d %b %Y') }}</td>
+                        <td>
+                            {% if application.status == 'Pending' %}
+                                <span class="badge bg-warning">{{ application.status }}</span>
+                            {% elif application.status == 'Approved' %}
+                                <span class="badge bg-success">{{ application.status }}</span>
+                            {% else %}
+                                <span class="badge bg-danger">{{ application.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('admin_application_detail', application_id=application.application_id) }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">No applications found with the selected filters.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

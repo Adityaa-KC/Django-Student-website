@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - University Admission System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="hero-title"><i class="fas fa-university me-3"></i>University Admission System</h1>
+                <p class="hero-subtitle">Shaping futures through quality education and excellence</p>
+                {% if not current_user.is_authenticated %}
+                <div class="mt-4">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-3 px-4 py-2">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg px-4 py-2">
+                        <i class="fas fa-user-plus me-2"></i>Register
+                    </a>
+                </div>
+                {% else %}
+                <div class="mt-4">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-4 py-2">
+                        <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <i class="fas fa-graduation-cap fa-3x mb-3 text-primary"></i>
+                    <div class="stat-number">5+</div>
+                    <div class="stat-title">Courses Offered</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                    <div class="stat-number">2000+</div>
+                    <div class="stat-title">Students</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <i class="fas fa-award fa-3x mb-3 text-primary"></i>
+                    <div class="stat-number">50+</div>
+                    <div class="stat-title">Awards</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <i class="fas fa-chalkboard-teacher fa-3x mb-3 text-primary"></i>
+                    <div class="stat-number">200+</div>
+                    <div class="stat-title">Faculty</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Courses Section -->
+<div class="container mt-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h2 class="display-5 mb-4 fw-bold" style="color: #0d6efd;">Our Featured Courses</h2>
+            <p class="lead mb-5" style="color: #000000;">Explore our diverse range of academic programs designed for your future success</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-4 mb-4">
+            <div class="card course-card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ course.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        {% if course.code.startswith('CS') %}
+                        <i class="fas fa-laptop-code course-icon"></i>
+                        {% elif course.code.startswith('EE') %}
+                        <i class="fas fa-bolt course-icon"></i>
+                        {% elif course.code.startswith('BA') %}
+                        <i class="fas fa-chart-line course-icon"></i>
+                        {% elif course.code.startswith('PSY') %}
+                        <i class="fas fa-brain course-icon"></i>
+                        {% elif course.code.startswith('ME') %}
+                        <i class="fas fa-cogs course-icon"></i>
+                        {% else %}
+                        <i class="fas fa-book course-icon"></i>
+                        {% endif %}
+                    </div>
+                    <h6 class="card-subtitle mb-3 text-center" style="color: #6c8fff;">{{ course.code }}</h6>
+                    <p class="card-text">{{ course.description if course.description else 'No description available.' }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <span class="badge bg-primary">{{ course.duration }} Years</span>
+                        {% if current_user.is_authenticated and not current_user.is_admin %}
+                        <a href="{{ url_for('new_application') }}" class="btn btn-outline-primary">Apply Now</a>
+                        {% elif not current_user.is_authenticated %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Login to Apply</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No courses are currently available. Please check back later.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Application Process Section -->
+<div class="container mt-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h2 class="display-5 mb-4 fw-bold" style="color: #0d6efd;">Application Process</h2>
+            <p class="lead mb-5" style="color: #000000;">Follow these simple steps to complete your admission application</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="feature-card border-left-primary h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-user-plus fa-4x text-primary"></i>
+                    </div>
+                    <div class="h4 mb-2" style="color: #0d6efd;">Step 1: Create Account</div>
+                    <p class="mb-0">Register for a new account to access the admission portal and begin your application journey.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="feature-card border-left-success h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-file-alt fa-4x text-success"></i>
+                    </div>
+                    <div class="h4 mb-2" style="color: #198754;">Step 2: Complete Form</div>
+                    <p class="mb-0">Fill out your application with personal information, academic details, and upload required documents.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="feature-card border-left-warning h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-clipboard-check fa-4x text-warning"></i>
+                    </div>
+                    <div class="h4 mb-2" style="color: #ffc107;">Step 3: Track Progress</div>
+                    <p class="mb-0">Monitor your application status through your dashboard and receive timely updates.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- University Showcase Section -->
+<div class="container mt-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h2 class="display-5 mb-4 fw-bold" style="color: #0d6efd;">Our Partner Universities</h2>
+            <p class="lead mb-5" style="color: #000000;">We collaborate with world-class institutions to provide the best opportunities for our students</p>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100" style="background-color: #2a2d31; border: none; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);">
+                <img src="{{ url_for('static', filename='img/universities/university1.svg') }}" class="card-img-top p-3" alt="Harvard University">
+                <div class="card-body text-center" style="color: #e1e1e1;">
+                    <h4 class="card-title mb-3" style="color: #dc3545;">Harvard University</h4>
+                    <p class="card-text">Established in 1636, Harvard University is renowned for its academic excellence and prestigious programs.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100" style="background-color: #2a2d31; border: none; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);">
+                <img src="{{ url_for('static', filename='img/universities/university2.svg') }}" class="card-img-top p-3" alt="Oxford University">
+                <div class="card-body text-center" style="color: #e1e1e1;">
+                    <h4 class="card-title mb-3" style="color: #198754;">Oxford University</h4>
+                    <p class="card-text">As the oldest university in the English-speaking world, Oxford continues to lead in research and education.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100" style="background-color: #2a2d31; border: none; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);">
+                <img src="{{ url_for('static', filename='img/universities/university3.svg') }}" class="card-img-top p-3" alt="MIT">
+                <div class="card-body text-center" style="color: #e1e1e1;">
+                    <h4 class="card-title mb-3" style="color: #0dcaf0;">Massachusetts Institute of Technology</h4>
+                    <p class="card-text">MIT is a pioneer in research and innovation, particularly in science, engineering, and technology.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4">Start Your Academic Journey Today</h2>
+                <p class="lead mb-4">Join thousands of students who have found their path to success with our university</p>
+                <a href="{{ url_for('register') }}" class="btn cta-btn">Create an Account</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

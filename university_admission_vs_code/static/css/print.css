@@ -1,0 +1,230 @@
+/* Print Styles for Application Form */
+
+/* General print settings */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        font-size: 12pt;
+        line-height: 1.5;
+        background: #f0f5a7;
+        color: #000;
+    }
+    
+    .d-print-none {
+        display: none !important;
+    }
+    
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    .card-body {
+        padding: 0 !important;
+    }
+    
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+    
+    /* Page breaks */
+    @page {
+        size: A4 portrait;
+        margin: 2cm 1.5cm;
+    }
+}
+
+/* Print Form Styling */
+.print-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+}
+
+.university-logo {
+    width: 80px;
+    margin-right: 20px;
+    color: #2e59d9;
+}
+
+.university-info {
+    flex: 1;
+}
+
+.university-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.university-address {
+    font-size: 14px;
+    margin: 5px 0 0 0;
+}
+
+.application-title {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.application-title h2 {
+    font-size: 20px;
+    text-decoration: underline;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.application-meta {
+    width: 250px;
+}
+
+.meta-table {
+    width: 100%;
+    font-size: 12px;
+    border-collapse: collapse;
+}
+
+.meta-table td {
+    padding: 3px;
+}
+
+.main-content {
+    margin-bottom: 30px;
+}
+
+.info-container {
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 16px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.info-table td {
+    padding: 8px;
+    vertical-align: top;
+}
+
+.image-cell {
+    width: 25%;
+    text-align: center;
+    vertical-align: top;
+}
+
+.photo-container {
+    width: 120px;
+    height: 150px;
+    border: 1px solid #000;
+    margin: 0 auto;
+    overflow: hidden;
+    text-align: center;
+}
+
+.photo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.aadhar-container {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border: 1px solid #000;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.aadhar-container img {
+    width: 100%;
+    height: auto;
+}
+
+.signature-section {
+    margin-top: 40px;
+    text-align: right;
+}
+
+.signature-container {
+    display: inline-block;
+    text-align: center;
+}
+
+.signature-container img {
+    max-width: 200px;
+    max-height: 80px;
+    border-bottom: 1px solid #000;
+}
+
+.signature-container p {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.datetime-section {
+    margin-top: 30px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.address-section {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.address-box {
+    border: 1px solid #000;
+    height: 120px;
+    padding: 10px;
+}
+
+.address-box .instruction {
+    font-style: italic;
+    color: #666;
+    margin-top: 0;
+}
+
+.footer {
+    font-size: 10px;
+    text-align: center;
+    color: #424242;
+    margin-top: 20px;
+    border-top: 1px solid #cafa9c;
+    padding-top: 10px;
+}
+
+/* Media queries for screens */
+@media not print {
+    .print-container {
+        max-width: 800px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        background: #fff;
+    }
+}

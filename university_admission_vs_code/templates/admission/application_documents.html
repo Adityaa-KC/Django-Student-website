@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Upload Documents - University Admission System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .preview-container {
+        width: 200px;
+        height: 200px;
+        border: 1px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    
+    .preview-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .preview-controls {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        display: flex;
+        gap: 5px;
+    }
+    
+    .preview-controls .btn {
+        opacity: 0.8;
+    }
+    
+    .preview-controls .btn:hover {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Documents</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>Please upload all required documents to continue. 
+                    Accepted formats: JPG, JPEG, PNG. Maximum size: 10MB.
+                </div>
+                
+                <div class="row">
+                    <!-- Photo Upload -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-secondary">
+                                <h5 class="mb-0">Photo</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="preview-container mx-auto" id="photo-preview-container">
+                                    {% if 'photo' in documents %}
+                                        <img src="{{ documents.photo.file.url }}" alt="Photo">
+                                        <div class="preview-controls">
+                                            <a href="#" class="btn btn-sm btn-danger" 
+                                               onclick="event.preventDefault(); document.getElementById('photo-upload-form').style.display = 'block';">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="text-muted">
+                                            <i class="fas fa-user fa-3x mb-2"></i>
+                                            <p>No photo uploaded</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <form method="POST" enctype="multipart/form-data" id="photo-upload-form"
+                                      style="{% if 'photo' in documents %}display: none;{% endif %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="doc_type" value="photo">
+                                    
+                                    <div class="mb-3">
+                                        {{ photo_form.file|as_crispy_field }}
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-upload me-1"></i>Upload Photo
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Signature Upload -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-secondary">
+                                <h5 class="mb-0">Signature</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="preview-container mx-auto" id="signature-preview-container">
+                                    {% if 'signature' in documents %}
+                                        <img src="{{ documents.signature.file.url }}" alt="Signature">
+                                        <div class="preview-controls">
+                                            <a href="#" class="btn btn-sm btn-danger" 
+                                               onclick="event.preventDefault(); document.getElementById('signature-upload-form').style.display = 'block';">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="text-muted">
+                                            <i class="fas fa-signature fa-3x mb-2"></i>
+                                            <p>No signature uploaded</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <form method="POST" enctype="multipart/form-data" id="signature-upload-form"
+                                      style="{% if 'signature' in documents %}display: none;{% endif %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="doc_type" value="signature">
+                                    
+                                    <div class="mb-3">
+                                        {{ signature_form.file|as_crispy_field }}
+                                    </div>
+                                    
+                                    <div class="alert alert-warning small">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>Signature dimensions should not exceed 400×200 pixels
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-upload me-1"></i>Upload Signature
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Aadhar Card Upload -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-secondary">
+                                <h5 class="mb-0">Aadhar Card</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="preview-container mx-auto" id="aadhar-preview-container">
+                                    {% if 'aadhar_card' in documents %}
+                                        <img src="{{ documents.aadhar_card.file.url }}" alt="Aadhar Card">
+                                        <div class="preview-controls">
+                                            <a href="#" class="btn btn-sm btn-danger" 
+                                               onclick="event.preventDefault(); document.getElementById('aadhar-upload-form').style.display = 'block';">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="text-muted">
+                                            <i class="fas fa-id-card fa-3x mb-2"></i>
+                                            <p>No Aadhar card uploaded</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <form method="POST" enctype="multipart/form-data" id="aadhar-upload-form"
+                                      style="{% if 'aadhar_card' in documents %}display: none;{% endif %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="doc_type" value="aadhar_card">
+                                    
+                                    <div class="mb-3">
+                                        {{ aadhar_form.file|as_crispy_field }}
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-upload me-1"></i>Upload Aadhar Card
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'edit_application' application.pk %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Application
+                            </a>
+                            
+                            {% if 'photo' in documents and 'signature' in documents and 'aadhar_card' in documents %}
+                                <a href="{% url 'preview_application' application.pk %}" class="btn btn-primary">
+                                    <i class="fas fa-eye me-1"></i>Preview Application
+                                </a>
+                            {% else %}
+                                <button class="btn btn-primary" disabled>
+                                    <i class="fas fa-eye me-1"></i>Preview Application
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // File input preview
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        
+        fileInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const fileType = this.form.querySelector('input[name="doc_type"]').value;
+                const previewContainer = document.getElementById(`${fileType}-preview-container`);
+                
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Clear the container
+                        previewContainer.innerHTML = '';
+                        
+                        // Create image element
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.alt = fileType;
+                        
+                        previewContainer.appendChild(img);
+                    };
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

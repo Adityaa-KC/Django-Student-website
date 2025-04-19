@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Harvard-inspired university building -->
+  <rect width="300" height="200" fill="#e6e6e6"/>
+  
+  <!-- Main Building -->
+  <rect x="50" y="30" width="200" height="140" fill="#a52a2a"/>
+  
+  <!-- Roof -->
+  <polygon points="50,30 150,10 250,30" fill="#4d2c2c"/>
+  
+  <!-- Windows -->
+  <rect x="70" y="50" width="20" height="30" fill="#e1f4f9"/>
+  <rect x="110" y="50" width="20" height="30" fill="#e1f4f9"/>
+  <rect x="170" y="50" width="20" height="30" fill="#e1f4f9"/>
+  <rect x="210" y="50" width="20" height="30" fill="#e1f4f9"/>
+  
+  <rect x="70" y="100" width="20" height="30" fill="#e1f4f9"/>
+  <rect x="110" y="100" width="20" height="30" fill="#e1f4f9"/>
+  <rect x="170" y="100" width="20" height="30" fill="#e1f4f9"/>
+  <rect x="210" y="100" width="20" height="30" fill="#e1f4f9"/>
+  
+  <!-- Door -->
+  <rect x="140" y="130" width="20" height="40" fill="#5d4037"/>
+  <circle cx="145" cy="150" r="2" fill="#ffd700"/>
+  
+  <!-- Pillars -->
+  <rect x="130" y="30" width="5" height="100" fill="#8c6c69"/>
+  <rect x="165" y="30" width="5" height="100" fill="#8c6c69"/>
+  
+  <!-- Steps -->
+  <rect x="120" y="170" width="60" height="5" fill="#9e9e9e"/>
+  <rect x="110" y="175" width="80" height="5" fill="#9e9e9e"/>
+  <rect x="100" y="180" width="100" height="5" fill="#9e9e9e"/>
+  
+  <!-- Tower -->
+  <rect x="140" y="10" width="20" height="20" fill="#863737"/>
+  <rect x="145" y="0" width="10" height="10" fill="#863737"/>
+  
+  <!-- Text -->
+  <text x="150" y="195" font-family="Arial" font-size="10" text-anchor="middle" fill="#000">HARVARD UNIVERSITY</text>
+</svg>

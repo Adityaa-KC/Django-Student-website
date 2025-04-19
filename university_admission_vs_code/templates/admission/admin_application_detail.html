@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Application Details - University Admission System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>Application Details</h4>
+                <div>
+                    <button onclick="window.print();" class="btn btn-light">
+                        <i class="fas fa-print me-1"></i>Print
+                    </button>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-light ms-2">
+                        <i class="fas fa-arrow-left me-1"></i>Back
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-{% if application.status == 'pending' %}warning{% elif application.status == 'approved' %}success{% else %}danger{% endif %}">
+                    <h5 class="mb-0">
+                        <i class="fas {% if application.status == 'pending' %}fa-clock{% elif application.status == 'approved' %}fa-check-circle{% else %}fa-times-circle{% endif %} me-2"></i>
+                        Application Status: {{ application.status|title }}
+                    </h5>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <form method="POST" action="{% url 'update_application_status' application.pk %}" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <label for="status" class="me-2">Update Status:</label>
+                            <select name="status" id="status" class="form-select me-2" style="width: 150px;">
+                                <option value="pending" {% if application.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="approved" {% if application.status == 'approved' %}selected{% endif %}>Approved</option>
+                                <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Save
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="border-bottom pb-2 mb-3">Application Information</h5>
+                        <p><strong>Application ID:</strong> {{ application.application_id|default:application.id }}</p>
+                        <p><strong>Date Applied:</strong> {{ application.date_created|date:"d-m-Y H:i:s" }}</p>
+                        <p><strong>Last Updated:</strong> {{ application.date_updated|date:"d-m-Y H:i:s" }}</p>
+                        
+                        <h5 class="border-bottom pb-2 mb-3 mt-4">Personal Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Full Name:</strong> {{ application.first_name }} {{ application.last_name }}</p>
+                                <p><strong>Date of Birth:</strong> {{ application.dob|date:"d-m-Y" }}</p>
+                                <p><strong>Gender:</strong> {{ application.get_gender_display }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Email:</strong> {{ application.email }}</p>
+                                <p><strong>Mobile Number:</strong> {{ application.phone }}</p>
+                                <p><strong>Aadhar Number:</strong> {{ application.aadhar_number }}</p>
+                            </div>
+                        </div>
+                        
+                        <h5 class="border-bottom pb-2 mb-3 mt-4">Course Information</h5>
+                        <p><strong>Selected Course:</strong> {{ application.course.name }}</p>
+                        <p><strong>Course Code:</strong> {{ application.course.code }}</p>
+                        <p><strong>Course Duration:</strong> {{ application.course.duration }}</p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <h5 class="border-bottom pb-2 mb-3">Documents</h5>
+                        <div class="mb-3">
+                            <p><strong>Photo:</strong></p>
+                            {% if 'photo' in documents %}
+                                <img src="{{ documents.photo.file.url }}" alt="Photo" 
+                                     class="img-thumbnail" style="max-height: 150px;">
+                            {% else %}
+                                <div class="alert alert-warning">Photo not uploaded</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <p><strong>Signature:</strong></p>
+                            {% if 'signature' in documents %}
+                                <img src="{{ documents.signature.file.url }}" alt="Signature" 
+                                     class="img-thumbnail" style="max-height: 100px;">
+                            {% else %}
+                                <div class="alert alert-warning">Signature not uploaded</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <p><strong>Aadhar Card:</strong></p>
+                            {% if 'aadhar_card' in documents %}
+                                <img src="{{ documents.aadhar_card.file.url }}" alt="Aadhar Card" 
+                                     class="img-thumbnail" style="max-height: 150px;">
+                            {% else %}
+                                <div class="alert alert-warning">Aadhar Card not uploaded</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

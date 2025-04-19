@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}Application Preview - University Admission System{% endblock %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">
+            <i class="fas fa-clipboard-list me-2"></i>Application Preview
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">Please Review Your Application</h5>
+            <p class="mb-0">Carefully review all information before final submission. Once submitted, you cannot edit the application.</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-black">
+                        <h5 class="mb-0">Application Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="30%"><strong>Application ID</strong></td>
+                                <td>{{ application.application_id }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date Applied</strong></td>
+                                <td>{{ application.date_created.strftime('%d %b %Y') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status</strong></td>
+                                <td>
+                                    {% if application.status == 'Pending' %}
+                                        <span class="badge bg-warning">{{ application.status }}</span>
+                                    {% elif application.status == 'Approved' %}
+                                        <span class="badge bg-success">{{ application.status }}</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">{{ application.status }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black">
+                        <h5 class="mb-0">Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="30%"><strong>Full Name</strong></td>
+                                <td>{{ application.first_name }} {{ application.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date of Birth</strong></td>
+                                <td>{{ application.date_of_birth.strftime('%d %b %Y') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender</strong></td>
+                                <td>
+                                    {% if application.gender == 'M' %}Male
+                                    {% elif application.gender == 'F' %}Female
+                                    {% else %}Other{% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile Number</strong></td>
+                                <td>{{ application.mobile_number }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td>{{ application.email }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aadhar Number</strong></td>
+                                <td>{{ application.aadhar_number }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black">
+                        <h5 class="mb-0">Course Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="30%"><strong>Selected Course</strong></td>
+                                <td>{{ application.course.name if application.course else 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Course Code</strong></td>
+                                <td>{{ application.course.code if application.course else 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duration</strong></td>
+                                <td>{{ application.course.duration if application.course else 'N/A' }} years</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-black text-center">
+                        <h5 class="mb-0">Applicant Photo</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if application.photo_filename %}
+                        <img src="{{ application.get_photo_url() }}" alt="Applicant Photo" class="img-fluid mb-3" style="max-height: 300px;">
+                        {% else %}
+                        <div class="alert alert-warning">No photo uploaded</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black text-center">
+                        <h5 class="mb-0">Signature</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if application.signature_filename %}
+                        <img src="{{ application.get_signature_url() }}" alt="Applicant Signature" class="img-fluid mb-3" style="max-height: 100px;">
+                        {% else %}
+                        <div class="alert alert-warning">No signature uploaded</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-black text-center">
+                        <h5 class="mb-0">Aadhar Card</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if application.aadhar_card_filename %}
+                        <img src="{{ application.get_aadhar_card_url() }}" alt="Aadhar Card" class="img-fluid mb-3">
+                        {% else %}
+                        <div class="alert alert-warning">No Aadhar card uploaded</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                {% if not application.is_complete %}
+                <form method="POST" action="{{ url_for('submit_application', application_id=application.application_id) }}">
+                    <button type="submit" class="btn btn-success" {% if not application.photo_filename or not application.signature_filename or not application.aadhar_card_filename %}disabled{% endif %}>
+                        <i class="fas fa-check-circle me-2"></i>Submit Application
+                    </button>
+                </form>
+                <div class="mt-2">
+                    <a href="{{ url_for('edit_application', application_id=application.application_id) }}" class="btn btn-warning">
+                        <i class="fas fa-edit me-2"></i>Edit Application
+                    </a>
+                </div>
+                {% if not application.photo_filename or not application.signature_filename or not application.aadhar_card_filename %}
+                <div class="alert alert-danger mt-3">
+                    <strong>Note:</strong> You must upload all required documents (photo, signature, and Aadhar card) before submitting.
+                </div>
+                {% endif %}
+                {% else %}
+                <div class="alert alert-success">
+                    <strong>Success!</strong> Your application has been submitted.
+                </div>
+                <div class="mt-2">
+                    <a href="{{ url_for('application_print', application_id=application.application_id) }}" class="btn btn-success" target="_blank">
+                        <i class="fas fa-print me-2"></i>Print Application
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary ms-2">
+                        <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Print Application - University Admission System{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .container {
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa !important;
+            color: #000 !important;
+            border-bottom: 2px solid #000 !important;
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+        }
+        
+        .print-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .print-logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .address-section {
+            border: 1px dashed #ccc;
+            padding: 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        
+        /* Set background to white and text to black for all elements */
+        body, .card, .card-header, .card-body, p, h1, h2, h3, h4, h5, h6 {
+            background-color: white !important;
+            color: black !important;
+        }
+        
+        .personal-info, .course-info {
+            margin-bottom: 20px;
+        }
+        
+        .document-section {
+            max-width: 150px;
+        }
+        
+        .personal-details-container {
+            display: flex !important;
+            flex-wrap: wrap !important;
+        }
+        
+        .details-col {
+            flex: 60% !important;
+        }
+        
+        .images-col {
+            flex: 40% !important;
+        }
+        
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+        
+        .date-time, .footer-note {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-print me-2"></i>Print Application</h4>
+                <button onclick="window.print();" class="btn btn-light d-print-none">
+                    <i class="fas fa-print me-1"></i>Print
+                </button>
+            </div>
+            <div class="card-body p-4">
+                <!-- Print Header - Only visible when printing -->
+                <div class="print-header">
+                    <div class="print-logo mb-2">UNIVERSITY ADMISSION SYSTEM</div>
+                    <h2 class="mb-1">Application Form</h2>
+                    <p class="mb-0">Application ID: {{ application.application_id|default:application.id }}</p>
+                </div>
+                
+                <!-- Application Details -->
+                <div class="personal-details-container d-flex">
+                    <div class="details-col">
+                        <h5 class="border-bottom pb-2 mb-3">Personal Information</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><strong>Full Name:</strong> {{ application.first_name }} {{ application.last_name }}</p>
+                                <p><strong>Date of Birth:</strong> {{ application.dob|date:"d-m-Y" }}</p>
+                                <p><strong>Gender:</strong> {{ application.get_gender_display }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Email:</strong> {{ application.email }}</p>
+                                <p><strong>Mobile Number:</strong> {{ application.phone }}</p>
+                                <p><strong>Aadhar Number:</strong> {{ application.aadhar_number }}</p>
+                            </div>
+                        </div>
+                        
+                        <h5 class="border-bottom pb-2 mb-3">Course Information</h5>
+                        <p><strong>Selected Course:</strong> {{ application.course.name }}</p>
+                        <p><strong>Course Duration:</strong> {{ application.course.duration }}</p>
+                        
+                        <div class="date-time text-muted mt-3">
+                            <p><strong>Date & Time:</strong> {{ current_datetime|date:"d-m-Y H:i:s" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="images-col">
+                        <h5 class="border-bottom pb-2 mb-3">Documents</h5>
+                        <div class="mb-3">
+                            <p><strong>Photo:</strong></p>
+                            <img src="{{ documents.photo.file.url }}" alt="Photo" 
+                                 class="img-thumbnail" style="max-height: 150px;">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <p><strong>Signature:</strong></p>
+                            <img src="{{ documents.signature.file.url }}" alt="Signature" 
+                                 class="img-thumbnail" style="max-height: 100px;">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <p><strong>Aadhar Card:</strong></p>
+                            <img src="{{ documents.aadhar_card.file.url }}" alt="Aadhar Card" 
+                                 class="img-thumbnail" style="max-height: 150px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Address Section -->
+                <div class="address-section mt-4">
+                    <h5 class="mb-3">Current Address:</h5>
+                    <p class="text-muted">(Please write your complete address in the space provided below)</p>
+                    <div style="height: 120px;"></div>
+                </div>
+                
+                <!-- Disclaimer and Footer -->
+                <div class="footer-note text-muted mt-3">
+                    <p><strong>Note:</strong> This application form is not valid without signature. 
+                    Please bring a printed copy of this form along with original documents for verification at the time of admission.</p>
+                </div>
+                
+                <div class="d-print-none mt-4">
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                        </a>
+                        
+                        <button onclick="window.print();" class="btn btn-primary">
+                            <i class="fas fa-print me-1"></i>Print Application
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

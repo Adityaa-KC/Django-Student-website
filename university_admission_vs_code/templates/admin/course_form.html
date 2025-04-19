@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if course %}Edit Course{% else %}Add New Course{% endif %} - University Admission System
+{% endblock %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">
+            <i class="fas fa-book me-2"></i>
+            {% if course %}Edit Course{% else %}Add New Course{% endif %}
+        </h3>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{% if course %}{{ url_for('edit_course', course_id=course.id) }}{% else %}{{ url_for('new_course') }}{% endif %}">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Course Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ course.name if course else '' }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="code" class="form-label">Course Code <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="code" name="code" value="{{ course.code if course else '' }}" required>
+                        <div class="form-text">Unique identifier for the course (e.g., CS101, ENG202)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Duration (in years) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="duration" name="duration" min="1" max="10" value="{{ course.duration if course else '' }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <div class="form-check mt-4">
+                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" {% if not course or course.is_active %}checked{% endif %}>
+                            <label class="form-check-label" for="is_active">
+                                Course is active and available for applications
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Course Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4">{{ course.description if course else '' }}</textarea>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>
+                        {% if course %}Update Course{% else %}Save Course{% endif %}
+                    </button>
+                    <a href="{{ url_for('admin_courses') }}" class="btn btn-secondary ms-2">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

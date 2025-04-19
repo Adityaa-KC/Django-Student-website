@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - University Admission System{% endblock %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Student Dashboard</h3>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info">
+            <h5 class="alert-heading">Welcome, {{ current_user.username }}!</h5>
+            <p>This is your admission portal dashboard. You can create new applications and view your existing ones.</p>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-12 text-end">
+                <a href="{{ url_for('new_application') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>New Application
+                </a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-black">
+                        <h5 class="mb-0">Your Applications</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Application ID</th>
+                                        <th>Course</th>
+                                        <th>Date Applied</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for application in applications %}
+                                    <tr>
+                                        <td>{{ application.application_id }}</td>
+                                        <td>{{ application.course.name if application.course else 'N/A' }}</td>
+                                        <td>{{ application.date_created.strftime('%d %b %Y') }}</td>
+                                        <td>
+                                            {% if application.status == 'Pending' %}
+                                                <span class="badge bg-warning">{{ application.status }}</span>
+                                            {% elif application.status == 'Approved' %}
+                                                <span class="badge bg-success">{{ application.status }}</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">{{ application.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ url_for('application_preview', application_id=application.application_id) }}" class="btn btn-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                {% if not application.is_complete %}
+                                                <a href="{{ url_for('edit_application', application_id=application.application_id) }}" class="btn btn-warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                {% endif %}
+                                                <a href="{{ url_for('application_print', application_id=application.application_id) }}" class="btn btn-success">
+                                                    <i class="fas fa-print"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">You have not created any applications yet.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
