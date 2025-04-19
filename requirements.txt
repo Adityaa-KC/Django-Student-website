@@ -1,8 +1,0 @@
-email-validator
-flask
-flask-login
-flask-sqlalchemy
-flask-wtf
-gunicorn
-psycopg2-binary
-routes
