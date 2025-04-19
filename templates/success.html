@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Application Submitted - University Admission System{% endblock %}
+
+{% block styles %}
+<style>
+    .success-icon {
+        font-size: 5rem;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+    
+    .application-details {
+        margin-top: 2rem;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        background-color: #fff;
+    }
+    
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+        
+        .application-id {
+            background-color: #f8f9fa !important;
+            -webkit-print-color-adjust: exact;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-body p-5 text-center">
+                <div class="no-print">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <h2 class="mb-3">Application Submitted Successfully!</h2>
+                    <p class="lead mb-4">Your university admission application has been submitted successfully. Please keep a copy of this page for your records.</p>
+                    
+                    <div class="alert alert-info mb-4" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>Your application is now under review. You can check the status of your application by logging into your account.
+                    </div>
+                    
+                    <div class="application-id p-3 mb-4 bg-light rounded">
+                        <h5 class="mb-0">Application ID: <span class="fw-bold">{{ application.id }}</span></h5>
+                    </div>
+                    
+                    <button id="printBtn" class="btn btn-primary btn-lg mb-3">
+                        <i class="fas fa-print me-2"></i>Print Application
+                    </button>
+                </div>
+                
+                <div class="application-details" id="printArea">
+                    <div class="text-center mb-4">
+                        <h3>University Admission Application</h3>
+                        <p class="application-id">Application ID: {{ application.id }}</p>
+                        <p>Date: {{ application.created_at.strftime('%d-%m-%Y') }}</p>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="text-start">
+                                <h5 class="mb-3">Personal Information</h5>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th style="width: 35%">Full Name</th>
+                                            <td>{{ application.full_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date of Birth</th>
+                                            <td>{{ application.date_of_birth.strftime('%d-%m-%Y') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Mobile Number</th>
+                                            <td>{{ application.mobile_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Aadhar Number</th>
+                                            <td>{{ application.aadhar_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ application.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Course</th>
+                                            <td>{{ application.course }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h5 class="mb-3">Photo</h5>
+                                <img src="{{ url_for('uploaded_file', filename=application.photo_path) }}" class="img-thumbnail mb-3" alt="Applicant Photo" style="max-width: 150px; max-height: 150px;">
+                                
+                                <h5 class="mb-3">Signature</h5>
+                                <img src="{{ url_for('uploaded_file', filename=application.signature_path) }}" class="img-thumbnail" alt="Applicant Signature" style="max-width: 150px; max-height: 100px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-secondary" role="alert">
+                                <small>This is a computer-generated document. No signature is required.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 no-print">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-2"></i>Return to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/print.js') }}"></script>
+<script>
+    document.getElementById('printBtn').addEventListener('click', function() {
+        window.print();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Preview Application - University Admission System{% endblock %}
+
+{% block styles %}
+<style>
+    .preview-section {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        background-color: #fff;
+    }
+    
+    .preview-section-title {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .preview-row {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    
+    .preview-label {
+        font-weight: bold;
+        min-width: 200px;
+    }
+    
+    .preview-value {
+        flex-grow: 1;
+    }
+    
+    .document-preview {
+        max-width: 200px;
+        max-height: 200px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>Preview Your Application</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>Please review your application details carefully before submitting. You can go back and edit if needed.
+                </div>
+                
+                <!-- Personal Information Preview -->
+                <div class="preview-section">
+                    <h5 class="preview-section-title"><i class="fas fa-user me-2"></i>Personal Information</h5>
+                    
+                    <div class="preview-row">
+                        <div class="preview-label">Full Name:</div>
+                        <div class="preview-value">{{ application.full_name }}</div>
+                    </div>
+                    
+                    <div class="preview-row">
+                        <div class="preview-label">Date of Birth:</div>
+                        <div class="preview-value">{{ application.date_of_birth }}</div>
+                    </div>
+                    
+                    <div class="preview-row">
+                        <div class="preview-label">Mobile Number:</div>
+                        <div class="preview-value">{{ application.mobile_number }}</div>
+                    </div>
+                    
+                    <div class="preview-row">
+                        <div class="preview-label">Aadhar Number:</div>
+                        <div class="preview-value">{{ application.aadhar_number }}</div>
+                    </div>
+                    
+                    <div class="preview-row">
+                        <div class="preview-label">Email:</div>
+                        <div class="preview-value">{{ application.email }}</div>
+                    </div>
+                </div>
+                
+                <!-- Course Information Preview -->
+                <div class="preview-section">
+                    <h5 class="preview-section-title"><i class="fas fa-graduation-cap me-2"></i>Course Information</h5>
+                    
+                    <div class="preview-row">
+                        <div class="preview-label">Selected Course:</div>
+                        <div class="preview-value">{{ application.course }}</div>
+                    </div>
+                </div>
+                
+                <!-- Document Preview -->
+                <div class="preview-section">
+                    <h5 class="preview-section-title"><i class="fas fa-file-image me-2"></i>Uploaded Documents</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="preview-label">Photo:</div>
+                            {% if application.photo_path %}
+                                <img src="{{ url_for('uploaded_file', filename=application.photo_path) }}" class="document-preview" alt="Uploaded Photo">
+                            {% else %}
+                                <div class="alert alert-warning">Photo not available</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="preview-label">Signature:</div>
+                            {% if application.signature_path %}
+                                <img src="{{ url_for('uploaded_file', filename=application.signature_path) }}" class="document-preview" alt="Uploaded Signature">
+                            {% else %}
+                                <div class="alert alert-warning">Signature not available</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <form method="POST" action="{{ url_for('preview_application') }}" id="previewForm">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        {{ form.edit(class="btn btn-secondary btn-lg") }}
+                        {{ form.confirm_submit(class="btn btn-success btn-lg") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/preview.js') }}"></script>
+{% endblock %}

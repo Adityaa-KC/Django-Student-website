@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}University Admission System - Home{% endblock %}
+
+{% block content %}
+<div class="row align-items-center">
+    <div class="col-lg-6">
+        <div class="hero-content">
+            <h1 class="display-4 fw-bold mb-4">Welcome to the University Admission Portal</h1>
+            <p class="lead mb-4">Our university is dedicated to providing quality education and shaping the future leaders of tomorrow. Begin your journey with us today.</p>
+            
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary btn-lg">Go to Admin Dashboard</a>
+                {% else %}
+                    <a href="{{ url_for('application_form') }}" class="btn btn-primary btn-lg">Start Application</a>
+                {% endif %}
+            {% else %}
+                <div class="d-grid gap-2 d-md-flex">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-md-2">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">Register</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-6 mt-4 mt-lg-0">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-4">Admission Process</h3>
+                <div class="process-steps">
+                    <div class="process-step">
+                        <div class="process-icon bg-primary text-white">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="process-content">
+                            <h5>Create Account</h5>
+                            <p>Register with your email to create an account</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon bg-primary text-white">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="process-content">
+                            <h5>Fill Application</h5>
+                            <p>Complete the application form with personal details</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon bg-primary text-white">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                        <div class="process-content">
+                            <h5>Upload Documents</h5>
+                            <p>Upload your photo and signature</p>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-icon bg-primary text-white">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="process-content">
+                            <h5>Submit & Print</h5>
+                            <p>Preview, submit and print your application</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="text-center mb-4">Available Courses</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Computer Science</h5>
+                        <p class="card-text">Explore the digital world with our comprehensive Computer Science program.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Electrical Engineering</h5>
+                        <p class="card-text">Develop skills in electrical systems design and implementation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Business Administration</h5>
+                        <p class="card-text">Learn business strategies and management principles for today's market.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

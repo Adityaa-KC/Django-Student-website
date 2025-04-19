@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Application Details - University Admission System{% endblock %}
+
+{% block styles %}
+<style>
+    .detail-section {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        background-color: #fff;
+    }
+    
+    .detail-section-title {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .detail-row {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    
+    .detail-label {
+        font-weight: bold;
+        min-width: 200px;
+    }
+    
+    .detail-value {
+        flex-grow: 1;
+    }
+    
+    .document-preview {
+        max-width: 200px;
+        max-height: 200px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+    
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Application Details</h4>
+                <div class="no-print">
+                    <button id="printBtn" class="btn btn-light btn-sm">
+                        <i class="fas fa-print me-1"></i>Print
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info mb-4 no-print">
+                    <i class="fas fa-info-circle me-2"></i>This is your application detail page. You can view all the information you have submitted.
+                </div>
+                
+                <div class="application-status mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <h5 class="mb-1">Application ID:</h5>
+                                    <div class="h4 mb-0">{{ application.id }}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="mb-1">Date Applied:</h5>
+                                    <div>{{ application.created_at.strftime('%d-%m-%Y') }}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="mb-1">Status:</h5>
+                                    <div>
+                                        {% if application.status == 'Pending' %}
+                                            <span class="badge bg-warning text-dark">{{ application.status }}</span>
+                                        {% elif application.status == 'Approved' %}
+                                            <span class="badge bg-success">{{ application.status }}</span>
+                                        {% elif application.status == 'Rejected' %}
+                                            <span class="badge bg-danger">{{ application.status }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ application.status }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Personal Information Detail -->
+                <div class="detail-section">
+                    <h5 class="detail-section-title"><i class="fas fa-user me-2"></i>Personal Information</h5>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Full Name:</div>
+                        <div class="detail-value">{{ application.full_name }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Date of Birth:</div>
+                        <div class="detail-value">{{ application.date_of_birth.strftime('%d-%m-%Y') }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Mobile Number:</div>
+                        <div class="detail-value">{{ application.mobile_number }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Aadhar Number:</div>
+                        <div class="detail-value">{{ application.aadhar_number }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Email:</div>
+                        <div class="detail-value">{{ application.email }}</div>
+                    </div>
+                </div>
+                
+                <!-- Course Information Detail -->
+                <div class="detail-section">
+                    <h5 class="detail-section-title"><i class="fas fa-graduation-cap me-2"></i>Course Information</h5>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Selected Course:</div>
+                        <div class="detail-value">{{ application.course }}</div>
+                    </div>
+                </div>
+                
+                <!-- Document Detail -->
+                <div class="detail-section">
+                    <h5 class="detail-section-title"><i class="fas fa-file-image me-2"></i>Uploaded Documents</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="detail-label">Photo:</div>
+                            <img src="{{ url_for('uploaded_file', filename=application.photo_path) }}" class="document-preview" alt="Uploaded Photo">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <div class="detail-label">Signature:</div>
+                            <img src="{{ url_for('uploaded_file', filename=application.signature_path) }}" class="document-preview" alt="Uploaded Signature">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center no-print">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-2"></i>Return to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/print.js') }}"></script>
+<script>
+    document.getElementById('printBtn').addEventListener('click', function() {
+        window.print();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,138 @@
+/* General Styles */
+body {
+    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.footer {
+    margin-top: 3rem;
+}
+
+/* Card Styles */
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Hero Section Styles */
+.hero-content {
+    padding: 2rem 0;
+}
+
+/* Process Steps */
+.process-steps {
+    padding: 1rem 0;
+}
+
+.process-step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.process-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.process-content {
+    flex-grow: 1;
+}
+
+/* Form Styles */
+.form-section, .preview-section, .detail-section {
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.form-section-title, .preview-section-title, .detail-section-title {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+/* Admin Dashboard Styles */
+.dashboard-stats .stat-card {
+    transition: transform 0.3s ease;
+}
+
+.dashboard-stats .stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background-color: #fff;
+    }
+    
+    .container {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+
+/* Status badges */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: normal;
+}
+
+/* Upload Preview */
+.upload-preview {
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+/* Table styles */
+.table-responsive {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Custom buttons */
+.btn {
+    border-radius: 5px;
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-lg {
+    padding: 0.75rem 2rem;
+}
+
+/* Form validation styles */
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+}

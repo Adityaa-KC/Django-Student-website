@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Application Form - University Admission System{% endblock %}
+
+{% block styles %}
+<style>
+    .form-section {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        background-color: #fff;
+    }
+    
+    .form-section-title {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .upload-preview {
+        max-width: 200px;
+        max-height: 200px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>University Admission Application Form</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>Please fill in all the fields carefully. Fields marked with * are mandatory.
+                </div>
+                
+                <form method="POST" action="{{ url_for('application_form') }}" enctype="multipart/form-data" id="applicationForm">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <h5 class="form-section-title"><i class="fas fa-user me-2"></i>Personal Information</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.full_name.label(class="form-label") }}*
+                                {% if form.full_name.errors %}
+                                    {{ form.full_name(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.full_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.full_name(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.date_of_birth.label(class="form-label") }}*
+                                {% if form.date_of_birth.errors %}
+                                    {{ form.date_of_birth(class="form-control is-invalid", type="date") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.date_of_birth.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.date_of_birth(class="form-control", type="date") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.mobile_number.label(class="form-label") }}*
+                                {% if form.mobile_number.errors %}
+                                    {{ form.mobile_number(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.mobile_number.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.mobile_number(class="form-control") }}
+                                {% endif %}
+                                <div class="form-text">10-digit mobile number without country code</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.aadhar_number.label(class="form-label") }}*
+                                {% if form.aadhar_number.errors %}
+                                    {{ form.aadhar_number(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.aadhar_number.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.aadhar_number(class="form-control") }}
+                                {% endif %}
+                                <div class="form-text">12-digit Aadhar number without spaces</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}*
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.email(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Course Information Section -->
+                    <div class="form-section">
+                        <h5 class="form-section-title"><i class="fas fa-graduation-cap me-2"></i>Course Information</h5>
+                        
+                        <div class="mb-3">
+                            {{ form.course.label(class="form-label") }}*
+                            {% if form.course.errors %}
+                                {{ form.course(class="form-select is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.course.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.course(class="form-select") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Document Upload Section -->
+                    <div class="form-section">
+                        <h5 class="form-section-title"><i class="fas fa-upload me-2"></i>Document Upload</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.photo.label(class="form-label") }}*
+                                {% if form.photo.errors %}
+                                    {{ form.photo(class="form-control is-invalid", id="photoInput") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.photo.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.photo(class="form-control", id="photoInput") }}
+                                {% endif %}
+                                <div class="form-text">Upload a recent passport-sized photo (JPG, JPEG, PNG, max 10MB)</div>
+                                <img id="photoPreview" class="upload-preview d-none" alt="Photo Preview">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.signature.label(class="form-label") }}*
+                                {% if form.signature.errors %}
+                                    {{ form.signature(class="form-control is-invalid", id="signatureInput") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.signature.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.signature(class="form-control", id="signatureInput") }}
+                                {% endif %}
+                                <div class="form-text">Upload your signature (JPG, JPEG, PNG, max 10MB)</div>
+                                <img id="signaturePreview" class="upload-preview d-none" alt="Signature Preview">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+<script>
+    // Display file uploads preview
+    document.getElementById('photoInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('photoPreview');
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    document.getElementById('signatureInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('signaturePreview');
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}
